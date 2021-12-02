@@ -17,15 +17,15 @@ func (librarian *Librarian) add(person Person) (error) {
   return nil
 }
 
-func (librarian Librarian) search(nickname string) (Person, error) {
+func (librarian Librarian) search(nickname string) (*Person, error) {
   var id int
-  var person Person
-  err := librarian.DatabasePtr.QueryRow("SELECT * FROM person WHERE nickname = ?", nickname).Scan(&id, &person.Nickname, &person.FirstName, &person.MiddleName, &person.LastName, &person.PhoneCountry, &person.PhoneArea, &person.PhoneNumber, &person.Email, &person.Birthdate, &person.Description)
+  personPtr := new(Person)
+  err := librarian.DatabasePtr.QueryRow("SELECT * FROM person WHERE nickname = ?", nickname).Scan(&id, &personPtr.Nickname, &personPtr.FirstName, &personPtr.MiddleName, &personPtr.LastName, &personPtr.PhoneCountry, &personPtr.PhoneArea, &personPtr.PhoneNumber, &personPtr.Email, &personPtr.Birthdate, &personPtr.Description)
   if err != nil {
     if err == sql.ErrNoRows {
-      return Person{}, fmt.Errorf("search %v: unknown nickname", nickname)
+      return nil, fmt.Errorf("search %v: unknown nickname", nickname)
     }
-    return Person{}, fmt.Errorf("search %v: %v", nickname, err)
+    return nil, fmt.Errorf("search %v: %v", nickname, err)
   }
-  return person, nil
+  return personPtr, nil
 }

@@ -186,38 +186,41 @@ func TestSearchNickname(t *testing.T) {
   if err != nil {
     t.Errorf("expected error to be nil got %v", err)
   }
-  person, err := librarian.search("Bullshit")
+  personPtr, err := librarian.search("Bullshit")
   if err != nil {
     t.Errorf("expected error to be nil got %v", err)
   }
-  if person.Nickname != "Bullshit" {
-    t.Errorf("expected Bullshit got %v", person.Nickname)
+  if personPtr.Nickname != "Bullshit" {
+    t.Errorf("expected Bullshit got %v", personPtr.Nickname)
   }
-  if person.FirstName != "Lam" {
-    t.Errorf("expected Lam got %v", person.MiddleName)
+  if personPtr.FirstName != "Lam" {
+    t.Errorf("expected Lam got %v", personPtr.MiddleName)
   }
-  if person.MiddleName != "Nha" {
-    t.Errorf("expected Nha got %v", person.MiddleName)
+  if personPtr.MiddleName != "Nha" {
+    t.Errorf("expected Nha got %v", personPtr.MiddleName)
   }
-  if person.LastName != "Tranh" {
-    t.Errorf("expected Tranh got %v", person.LastName)
+  if personPtr.LastName != "Tranh" {
+    t.Errorf("expected Tranh got %v", personPtr.LastName)
   }
-  if person.PhoneCountry != "84" {
-    t.Errorf("expected 84 got %v", person.PhoneCountry)
+  if personPtr.PhoneCountry != "84" {
+    t.Errorf("expected 84 got %v", personPtr.PhoneCountry)
   }
-  if person.PhoneArea != "2" {
-    t.Errorf("expected 2 got %v", person.PhoneArea)
+  if personPtr.PhoneArea != "2" {
+    t.Errorf("expected 2 got %v", personPtr.PhoneArea)
   }
-  if person.PhoneNumber != "111222333" {
-    t.Errorf("expected 111222333 got %v", person.PhoneNumber)
+  if personPtr.PhoneNumber != "111222333" {
+    t.Errorf("expected 111222333 got %v", personPtr.PhoneNumber)
   }
-  if person.Email != "nhatrang@gmail.com" {
-    t.Errorf("expected nhatrang@gmail.com got %v", person.Email)
+  if personPtr.Email != "nhatrang@gmail.com" {
+    t.Errorf("expected nhatrang@gmail.com got %v", personPtr.Email)
   }
-  if person.Birthdate != "19970725" {
-    t.Errorf("expected 19970725 got %v", person.Birthdate)
+  if personPtr.Birthdate != "19970725" {
+    t.Errorf("expected 19970725 got %v", personPtr.Birthdate)
   }
-  if person.Description != "jerk" {
-    t.Errorf("expected jerk got %v", person.Description)
+  if personPtr.Description != "jerk" {
+    t.Errorf("expected jerk got %v", personPtr.Description)
   }
+}
+
+func TestSearchNotExist(t *testing.T) {
 }
