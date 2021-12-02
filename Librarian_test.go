@@ -167,9 +167,11 @@ func TestAddPartialPerson(t *testing.T) {
   }
 }
 
-func test_search_nickname(t *testing.T) {
-  librarian := Librarian{}
-  person := Person{
+func TestSearchNickname(t *testing.T) {
+  librarian := Librarian{
+    DatabasePtr: new(MockDatabase),
+  }
+  err := librarian.add(Person{
     Nickname: "Bullshit",
     FirstName: "Lam",
     MiddleName: "Nha",
@@ -180,12 +182,11 @@ func test_search_nickname(t *testing.T) {
     Email: "nhatrang@gmail.com",
     Birthdate: "19970725",
     Description: "jerk",
-  }
-  err := librarian.add(person)
+  })
   if err != nil {
     t.Errorf("expected error to be nil got %v", err)
   }
-  person, err = librarian.search("Bullshit")
+  person, err := librarian.search("Bullshit")
   if err != nil {
     t.Errorf("expected error to be nil got %v", err)
   }

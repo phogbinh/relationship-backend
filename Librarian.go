@@ -1,6 +1,7 @@
 package main
 
 import(
+  "database/sql"
   "fmt"
 )
 
@@ -17,5 +18,14 @@ func (librarian *Librarian) add(person Person) (error) {
 }
 
 func (librarian Librarian) search(nickname string) (Person, error) {
-  return Person{}, nil
+  var id int
+  var person Person
+  err := librarian.DatabasePtr.QueryRow("SELECT * FROM person WHERE nickname = ?", nickname).Scan(&id, &person.Nickname, &person.FirstName, &person.MiddleName, &person.LastName, &person.PhoneCountry, &person.PhoneArea, &person.PhoneNumber, &person.Email, &person.Birthdate, &person.Description)
+  if err != nil {
+    if err == sql.ErrNoRows {
+      return Person{}, fmt.Errorf("search %v: unknown nickname", nickname)
+    }
+    return Person{}, fmt.Errorf("search %v: %v", nickname, err)
+  }
+  return person, nil
 }

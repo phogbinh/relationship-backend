@@ -15,6 +15,14 @@ func (dbPtr *MockDatabase) Query(query string, args ...interface{}) (IRows, erro
   return rowsPtr, nil
 }
 
+func (dbPtr *MockDatabase) QueryRow(query string, args ...interface{}) (IRows) {
+  rows := MockRows{
+    Data: dbPtr.Data,
+    First: true,
+  }
+  return &rows
+}
+
 func (dbPtr *MockDatabase) Exec(query string, args ...interface{}) (sql.Result, error) {
   dbPtr.Data = args
   return nil, nil
