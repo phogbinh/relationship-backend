@@ -9,10 +9,11 @@ type MockDatabase struct {
 }
 
 func (dbPtr *MockDatabase) Query(query string, args ...interface{}) (IRows, error) {
-  rowsPtr := new(MockRows)
-  rowsPtr.Data = dbPtr.Data
-  rowsPtr.First = true
-  return rowsPtr, nil
+  rows := MockRows{
+    Data: dbPtr.Data,
+    First: true,
+  }
+  return &rows, nil
 }
 
 func (dbPtr *MockDatabase) QueryRow(query string, args ...interface{}) (IRows) {
