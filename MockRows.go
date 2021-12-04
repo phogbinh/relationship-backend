@@ -1,6 +1,7 @@
 package main
 
 import(
+  "database/sql"
   "reflect"
 )
 
@@ -26,6 +27,9 @@ func (rowsPtr *MockRows) Next() (bool) {
 }
 
 func (rowsPtr *MockRows) Scan(dest ...interface{}) (error) {
+  if len(rowsPtr.Data) == 0 {
+    return sql.ErrNoRows
+  }
   for i := 1; i < len(dest); i++ {
     reflect.ValueOf(dest[i]).Elem().Set(reflect.ValueOf(rowsPtr.Data[i - 1]))
   }

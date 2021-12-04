@@ -223,4 +223,14 @@ func TestSearchNickname(t *testing.T) {
 }
 
 func TestSearchNotExist(t *testing.T) {
+  librarian := Librarian{
+    DatabasePtr: new(MockDatabase),
+  }
+  personPtr, err := librarian.search("Mom")
+  if personPtr != nil {
+    t.Errorf("expected nil got %v", personPtr)
+  }
+  if err.Error() != "search Mom: unknown nickname" {
+    t.Errorf("expected \"search Mom: unknown nickname\" (without quotes) got %v", err.Error())
+  }
 }
