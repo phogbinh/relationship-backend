@@ -61,7 +61,7 @@ func TestAddFullPerson(t *testing.T) {
     t.Errorf("expected Bullshit got %v", person.Nickname)
   }
   if person.FirstName != "Lam" {
-    t.Errorf("expected Lam got %v", person.MiddleName)
+    t.Errorf("expected Lam got %v", person.FirstName)
   }
   if person.MiddleName != "Nha" {
     t.Errorf("expected Nha got %v", person.MiddleName)
@@ -139,7 +139,7 @@ func TestAddPartialPerson(t *testing.T) {
     t.Errorf("expected Johnny got %v", person.Nickname)
   }
   if person.FirstName != "John" {
-    t.Errorf("expected John got %v", person.MiddleName)
+    t.Errorf("expected John got %v", person.FirstName)
   }
   if person.MiddleName != "" {
     t.Errorf("expected empty string got %v", person.MiddleName)
@@ -194,7 +194,7 @@ func TestSearchNickname(t *testing.T) {
     t.Errorf("expected Bullshit got %v", personPtr.Nickname)
   }
   if personPtr.FirstName != "Lam" {
-    t.Errorf("expected Lam got %v", personPtr.MiddleName)
+    t.Errorf("expected Lam got %v", personPtr.FirstName)
   }
   if personPtr.MiddleName != "Nha" {
     t.Errorf("expected Nha got %v", personPtr.MiddleName)
