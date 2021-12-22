@@ -54,3 +54,19 @@ func TestRequestSearchNickname(t *testing.T) {
     t.Errorf("expected \"khá bảnh ;))\" (without quotes) got %v", personPtr.Description)
   }
 }
+
+func TestRequestSearchNicknameNotExist(t *testing.T) {
+  librarian := Librarian{
+    DatabasePtr: new(MockDatabase),
+  }
+  requestPtr := httptest.NewRequest( http.MethodGet,
+                                     "/search",
+                                     bytes.NewBuffer( []byte(`{"nickname": "凱哥"}`) ) )
+  personPtr, err := search(requestPtr, &librarian)
+  if personPtr != nil {
+    t.Errorf("expected nil got %v", personPtr)
+  }
+  if err.Error() != "search 凱哥: unknown nickname" {
+    t.Errorf("expected \"search 凱哥: unknown nickname\" (without quotes) got %v", err.Error())
+  }
+}
