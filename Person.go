@@ -1,15 +1,19 @@
 package main
 
+import(
+  "database/sql"
+)
+
 type Person struct {
   Id int
   Nickname string
-  FirstName string
-  MiddleName string
-  LastName string
-  PhoneCountry string
-  PhoneArea string
-  PhoneNumber string
-  Email string
-  Birthdate string
-  Description string
+  FirstName sql.NullString
+  MiddleName sql.NullString
+  LastName sql.NullString
+  PhoneCountry sql.NullString
+  PhoneArea sql.NullString
+  PhoneNumber sql.NullString
+  Email sql.NullString
+  Birthdate sql.NullString
+  Description sql.NullString
 }
