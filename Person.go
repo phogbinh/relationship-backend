@@ -6,14 +6,14 @@ import(
 
 type Person struct {
   Id int
-  Nickname string
-  FirstName sql.NullString
-  MiddleName sql.NullString
-  LastName sql.NullString
-  PhoneCountry sql.NullString
-  PhoneArea sql.NullString
-  PhoneNumber sql.NullString
-  Email sql.NullString
-  Birthdate sql.NullString
-  Description sql.NullString
+  Nickname string `json:"nickname"`
+  FirstName sql.NullString `json:"firstName"`
+  MiddleName sql.NullString `json:"middleName"`
+  LastName sql.NullString `json:"lastName"`
+  PhoneCountry sql.NullString `json:"phoneCountry"`
+  PhoneArea sql.NullString `json:"phoneArea"`
+  PhoneNumber sql.NullString `json:"phoneNumber"`
+  Email sql.NullString `json:"email"`
+  Birthdate sql.NullString `json:"birthdate"`
+  Description sql.NullString `json:"description"`
 }
