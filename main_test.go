@@ -29,27 +29,6 @@ func TestRequestSearchNickname(t *testing.T) {
   if personPtr.FirstName != "Tuấn" {
     t.Errorf("expected Tuấn got %v", personPtr.FirstName)
   }
-  if personPtr.MiddleName != "" {
-    t.Errorf("expected empty string got %v", personPtr.MiddleName)
-  }
-  if personPtr.LastName != "" {
-    t.Errorf("expected empty string got %v", personPtr.LastName)
-  }
-  if personPtr.PhoneCountry != "" {
-    t.Errorf("expected empty string got %v", personPtr.PhoneCountry)
-  }
-  if personPtr.PhoneArea != "" {
-    t.Errorf("expected empty string got %v", personPtr.PhoneArea)
-  }
-  if personPtr.PhoneNumber != "" {
-    t.Errorf("expected empty string got %v", personPtr.PhoneNumber)
-  }
-  if personPtr.Email != "" {
-    t.Errorf("expected empty string got %v", personPtr.Email)
-  }
-  if personPtr.Birthdate != "" {
-    t.Errorf("expected empty string got %v", personPtr.Birthdate)
-  }
   if personPtr.Description != "khá bảnh ;))" {
     t.Errorf("expected \"khá bảnh ;))\" (without quotes) got %v", personPtr.Description)
   }
