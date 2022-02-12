@@ -1,11 +1,11 @@
 package main
 
 import(
+  "bytes"
   "database/sql"
-  "testing"
   "net/http"
   "net/http/httptest"
-  "bytes"
+  "testing"
 )
 
 func TestRequestSearchNickname(t *testing.T) {
