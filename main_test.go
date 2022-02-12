@@ -1,6 +1,7 @@
 package main
 
 import(
+  "database/sql"
   "testing"
   "net/http"
   "net/http/httptest"
@@ -13,8 +14,8 @@ func TestRequestSearchNickname(t *testing.T) {
   }
   librarian.add(Person{
     Nickname: "Cu Tuấn",
-    FirstName: "Tuấn",
-    Description: "khá bảnh ;))",
+    FirstName: sql.NullString{String: "Tuấn", Valid: true,},
+    Description: sql.NullString{String: "khá bảnh ;))", Valid: true,},
   })
   requestPtr := httptest.NewRequest( http.MethodGet,
                                      "/search",
@@ -26,11 +27,11 @@ func TestRequestSearchNickname(t *testing.T) {
   if personPtr.Nickname != "Cu Tuấn" {
     t.Errorf("expected \"Cu Tuấn\" got %v", personPtr.Nickname)
   }
-  if personPtr.FirstName != "Tuấn" {
-    t.Errorf("expected Tuấn got %v", personPtr.FirstName)
+  if personPtr.FirstName.String != "Tuấn" {
+    t.Errorf("expected Tuấn got %v", personPtr.FirstName.String)
   }
-  if personPtr.Description != "khá bảnh ;))" {
-    t.Errorf("expected \"khá bảnh ;))\" (without quotes) got %v", personPtr.Description)
+  if personPtr.Description.String != "khá bảnh ;))" {
+    t.Errorf("expected \"khá bảnh ;))\" (without quotes) got %v", personPtr.Description.String)
   }
 }
 
