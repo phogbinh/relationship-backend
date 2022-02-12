@@ -187,39 +187,55 @@ func TestSearchNickname(t *testing.T) {
   if err != nil {
     t.Errorf("expected error to be nil got %v", err)
   }
-  personPtr, err := librarian.search("Bullshit")
+  err = librarian.add(Person{
+    Nickname: "Bro BullshitAlpha",
+    FirstName: sql.NullString{String: "What", Valid: true,},
+  })
   if err != nil {
     t.Errorf("expected error to be nil got %v", err)
   }
-  if personPtr.Nickname != "Bullshit" {
-    t.Errorf("expected Bullshit got %v", personPtr.Nickname)
+  people, err := librarian.search("Bullshit")
+  if err != nil {
+    t.Errorf("expected error to be nil got %v", err)
   }
-  if personPtr.FirstName.String != "Lam" {
-    t.Errorf("expected Lam got %v", personPtr.FirstName.String)
+  if len(people) != 2 {
+    t.Errorf("expected 2 got %v", len(people))
   }
-  if personPtr.MiddleName.String != "Nha" {
-    t.Errorf("expected Nha got %v", personPtr.MiddleName.String)
+  if people[0].Nickname != "Bullshit" {
+    t.Errorf("expected Bullshit got %v", people[0].Nickname)
   }
-  if personPtr.LastName.String != "Tranh" {
-    t.Errorf("expected Tranh got %v", personPtr.LastName.String)
+  if people[0].FirstName.String != "Lam" {
+    t.Errorf("expected Lam got %v", people[0].FirstName.String)
   }
-  if personPtr.PhoneCountry.String != "84" {
-    t.Errorf("expected 84 got %v", personPtr.PhoneCountry.String)
+  if people[0].MiddleName.String != "Nha" {
+    t.Errorf("expected Nha got %v", people[0].MiddleName.String)
   }
-  if personPtr.PhoneArea.String != "2" {
-    t.Errorf("expected 2 got %v", personPtr.PhoneArea.String)
+  if people[0].LastName.String != "Tranh" {
+    t.Errorf("expected Tranh got %v", people[0].LastName.String)
   }
-  if personPtr.PhoneNumber.String != "111222333" {
-    t.Errorf("expected 111222333 got %v", personPtr.PhoneNumber.String)
+  if people[0].PhoneCountry.String != "84" {
+    t.Errorf("expected 84 got %v", people[0].PhoneCountry.String)
   }
-  if personPtr.Email.String != "nhatrang@gmail.com" {
-    t.Errorf("expected nhatrang@gmail.com got %v", personPtr.Email.String)
+  if people[0].PhoneArea.String != "2" {
+    t.Errorf("expected 2 got %v", people[0].PhoneArea.String)
   }
-  if personPtr.Birthdate.String != "19970725" {
-    t.Errorf("expected 19970725 got %v", personPtr.Birthdate.String)
+  if people[0].PhoneNumber.String != "111222333" {
+    t.Errorf("expected 111222333 got %v", people[0].PhoneNumber.String)
   }
-  if personPtr.Description.String != "jerk" {
-    t.Errorf("expected jerk got %v", personPtr.Description.String)
+  if people[0].Email.String != "nhatrang@gmail.com" {
+    t.Errorf("expected nhatrang@gmail.com got %v", people[0].Email.String)
+  }
+  if people[0].Birthdate.String != "19970725" {
+    t.Errorf("expected 19970725 got %v", people[0].Birthdate.String)
+  }
+  if people[0].Description.String != "jerk" {
+    t.Errorf("expected jerk got %v", people[0].Description.String)
+  }
+  if people[1].Nickname != "Bro BullshitAlpha" {
+    t.Errorf("expected Bro BullshitAlpha got %v", people[1].Nickname)
+  }
+  if people[1].FirstName.String != "What" {
+    t.Errorf("expected What got %v", people[1].FirstName.String)
   }
 }
 
@@ -227,11 +243,11 @@ func TestSearchNotExist(t *testing.T) {
   librarian := Librarian{
     DatabasePtr: new(MockDatabase),
   }
-  personPtr, err := librarian.search("Mom")
-  if personPtr != nil {
-    t.Errorf("expected nil got %v", personPtr)
+  people, err := librarian.search("Mom")
+  if err != nil {
+    t.Errorf("expected error to be nil got %v", err)
   }
-  if err.Error() != "search Mom: unknown nickname" {
-    t.Errorf("expected \"search Mom: unknown nickname\" (without quotes) got %v", err.Error())
+  if len(people) != 0 {
+    t.Errorf("expected 0 got %v", len(people))
   }
 }

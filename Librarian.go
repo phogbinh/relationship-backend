@@ -1,7 +1,6 @@
 package main
 
 import(
-  "database/sql"
   "fmt"
 )
 
@@ -17,15 +16,24 @@ func (librarian *Librarian) add(person Person) (error) {
   return nil
 }
 
-func (librarian Librarian) search(nickname string) (*Person, error) {
-  var id int
-  personPtr := new(Person)
-  err := librarian.DatabasePtr.QueryRow("SELECT * FROM person WHERE nickname = ?", nickname).Scan(&id, &personPtr.Nickname, &personPtr.FirstName, &personPtr.MiddleName, &personPtr.LastName, &personPtr.PhoneCountry, &personPtr.PhoneArea, &personPtr.PhoneNumber, &personPtr.Email, &personPtr.Birthdate, &personPtr.Description)
+func (librarian Librarian) search(nickname string) ([]Person, error) {
+  rowsPtr, err := librarian.DatabasePtr.Query("SELECT * FROM person WHERE nickname REGEXP ?", nickname)
   if err != nil {
-    if err == sql.ErrNoRows {
-      return nil, fmt.Errorf("search %v: unknown nickname", nickname)
-    }
-    return nil, fmt.Errorf("search %v: %v", nickname, err)
+    return nil, err
   }
-  return personPtr, nil
+  defer rowsPtr.Close()
+  people := []Person{} // prevent null on json marshal
+  for rowsPtr.Next() {
+    var person Person
+    err = rowsPtr.Scan(&person.Id, &person.Nickname, &person.FirstName, &person.MiddleName, &person.LastName, &person.PhoneCountry, &person.PhoneArea, &person.PhoneNumber, &person.Email, &person.Birthdate, &person.Description)
+    if err != nil {
+      return people, err
+    }
+    people = append(people, person)
+  }
+  err = rowsPtr.Err()
+  if err != nil {
+    return people, err
+  }
+  return people, nil
 }

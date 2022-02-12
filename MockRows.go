@@ -6,8 +6,8 @@ import(
 )
 
 type MockRows struct {
-  Data []interface{}
-  First bool
+  Data [][]interface{}
+  CurrentIndex int
 }
 
 func (rowsPtr *MockRows) Close() (error) {
@@ -19,19 +19,16 @@ func (rowsPtr *MockRows) Err() (error) {
 }
 
 func (rowsPtr *MockRows) Next() (bool) {
-  if rowsPtr.First {
-    rowsPtr.First = false
-    return true
-  }
-  return false
+  return rowsPtr.CurrentIndex < len(rowsPtr.Data)
 }
 
 func (rowsPtr *MockRows) Scan(dest ...interface{}) (error) {
-  if len(rowsPtr.Data) == 0 {
+  if len(rowsPtr.Data[rowsPtr.CurrentIndex]) == 0 {
     return sql.ErrNoRows
   }
   for i := 1; i < len(dest); i++ {
-    reflect.ValueOf(dest[i]).Elem().Set(reflect.ValueOf(rowsPtr.Data[i - 1]))
+    reflect.ValueOf(dest[i]).Elem().Set(reflect.ValueOf(rowsPtr.Data[rowsPtr.CurrentIndex][i - 1]))
   }
+  rowsPtr.CurrentIndex++
   return nil
 }

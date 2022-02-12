@@ -3,6 +3,7 @@ package main
 import(
   "encoding/json"
   "net/http"
+  "errors"
 )
 
 func search(requestPtr *http.Request, librarianPtr *Librarian) (*Person, error) {
@@ -11,7 +12,12 @@ func search(requestPtr *http.Request, librarianPtr *Librarian) (*Person, error) 
   if err != nil {
     return nil, err
   }
-  return librarianPtr.search(person.Nickname)
+  people, err := librarianPtr.search(person.Nickname)
+  if len(people) == 0 {
+    return nil, errors.New("search 凱哥: unknown nickname")
+  } else {
+    return &people[0], err
+  }
 }
 
 func main() {

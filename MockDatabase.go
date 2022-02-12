@@ -5,25 +5,25 @@ import(
 )
 
 type MockDatabase struct {  
-  Data []interface{}
+  Data [][]interface{}
 }
 
 func (databasePtr *MockDatabase) Query(query string, args ...interface{}) (IRows, error) {
   rows := MockRows{
     Data: databasePtr.Data,
-    First: true,
+    CurrentIndex: 0,
   }
   return &rows, nil
 }
 
 func (databasePtr *MockDatabase) QueryRow(query string, args ...interface{}) (IRow) {
   row := MockRow{
-    Data: databasePtr.Data,
+    Data: databasePtr.Data[0],
   }
   return &row
 }
 
 func (databasePtr *MockDatabase) Exec(query string, args ...interface{}) (sql.Result, error) {
-  databasePtr.Data = args
+  databasePtr.Data = append(databasePtr.Data, args)
   return nil, nil
 }
