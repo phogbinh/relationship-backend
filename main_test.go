@@ -20,18 +20,21 @@ func TestRequestSearchNickname(t *testing.T) {
   requestPtr := httptest.NewRequest( http.MethodGet,
                                      "/search",
                                      bytes.NewBuffer( []byte(`{"nickname": "Cu Tuấn"}`) ) )
-  personPtr, err := search(requestPtr, &librarian)
+  people, err := search(requestPtr, &librarian)
   if err != nil {
     t.Errorf("expected error to be nil got %v", err)
   }
-  if personPtr.Nickname != "Cu Tuấn" {
-    t.Errorf("expected \"Cu Tuấn\" got %v", personPtr.Nickname)
+  if len(people) != 1 {
+    t.Errorf("expected 1 got %v", len(people))
   }
-  if personPtr.FirstName.String != "Tuấn" {
-    t.Errorf("expected Tuấn got %v", personPtr.FirstName.String)
+  if people[0].Nickname != "Cu Tuấn" {
+    t.Errorf("expected \"Cu Tuấn\" got %v", people[0].Nickname)
   }
-  if personPtr.Description.String != "khá bảnh ;))" {
-    t.Errorf("expected \"khá bảnh ;))\" (without quotes) got %v", personPtr.Description.String)
+  if people[0].FirstName.String != "Tuấn" {
+    t.Errorf("expected Tuấn got %v", people[0].FirstName.String)
+  }
+  if people[0].Description.String != "khá bảnh ;))" {
+    t.Errorf("expected \"khá bảnh ;))\" (without quotes) got %v", people[0].Description.String)
   }
 }
 
@@ -42,11 +45,11 @@ func TestRequestSearchNicknameNotExist(t *testing.T) {
   requestPtr := httptest.NewRequest( http.MethodGet,
                                      "/search",
                                      bytes.NewBuffer( []byte(`{"nickname": "凱哥"}`) ) )
-  personPtr, err := search(requestPtr, &librarian)
-  if personPtr != nil {
-    t.Errorf("expected nil got %v", personPtr)
+  people, err := search(requestPtr, &librarian)
+  if err != nil {
+    t.Errorf("expected error to be nil got %v", err)
   }
-  if err.Error() != "search 凱哥: unknown nickname" {
-    t.Errorf("expected \"search 凱哥: unknown nickname\" (without quotes) got %v", err.Error())
+  if len(people) != 0 {
+    t.Errorf("expected 0 got %v", len(people))
   }
 }
