@@ -5,7 +5,7 @@ import(
 )
 
 type Librarian struct {
-  DatabasePtr *MockDatabase
+  DatabasePtr IDatabase
 }
 
 func (librarian *Librarian) add(person Person) (error) {
