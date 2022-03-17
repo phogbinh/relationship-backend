@@ -22,6 +22,22 @@ func add(requestPtr *http.Request, librarianPtr *Librarian) (*Person, error) {
   return librarianPtr.add(person)
 }
 
+func handleRequestAddPerson(responseWriter http.ResponseWriter, requestPtr *http.Request) {
+  personPtr, err := add(requestPtr, &librarian)
+  if err != nil {
+    responseWriter.WriteHeader(http.StatusInternalServerError)
+    fmt.Println(err)
+    return
+  }
+  responseWriter.WriteHeader(http.StatusCreated)
+  err = json.NewEncoder(responseWriter).Encode(personPtr)
+  if err != nil { // TODO test
+    responseWriter.WriteHeader(http.StatusInternalServerError)
+    fmt.Println(err)
+    return
+  }
+}
+
 func search(requestPtr *http.Request, librarianPtr *Librarian) ([]Person, error) {
   var person Person
   err := json.NewDecoder(requestPtr.Body).Decode(&person)
@@ -66,5 +82,6 @@ func main() {
     DatabasePtr: &database,
   }
   http.HandleFunc("/search", handleRequestSearchNickname)
+  http.HandleFunc("/add", handleRequestAddPerson)
   log.Fatal(http.ListenAndServe(os.Getenv("RELATIONSHIP_BACKEND_PORT"), nil))
 }
