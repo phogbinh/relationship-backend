@@ -18,7 +18,7 @@ func (librarian *Librarian) add(person Person) (*Person, error) {
   if err != nil {
     return nil, fmt.Errorf("get id after add: %v", err)
   }
-  err = librarian.DatabasePtr.QueryRow("SELECT * FROM person WHERE id = ?", id).Scan(&person)
+  err = librarian.DatabasePtr.QueryRow("SELECT * FROM person WHERE id = ?", id).Scan(&person.Id, &person.Nickname, &person.FirstName, &person.MiddleName, &person.LastName, &person.PhoneCountry, &person.PhoneArea, &person.PhoneNumber, &person.Email, &person.Birthdate, &person.Description)
   if err != nil {
     if err == sql.ErrNoRows {
       return nil, fmt.Errorf("get person %d: unknown person", id)
