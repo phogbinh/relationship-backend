@@ -1,6 +1,7 @@
 package main
 
 import(
+  "database/sql"
   "fmt"
 )
 
@@ -8,12 +9,23 @@ type Librarian struct {
   DatabasePtr IDatabase
 }
 
-func (librarian *Librarian) add(person Person) (error) {
-  _, err := librarian.DatabasePtr.Exec("INSERT INTO person(nickname, first_name, middle_name, last_name, phone_country, phone_area, phone_number, email, birthdate, description) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", person.Nickname, person.FirstName, person.MiddleName, person.LastName, person.PhoneCountry, person.PhoneArea, person.PhoneNumber, person.Email, person.Birthdate, person.Description)
+func (librarian *Librarian) add(person Person) (*Person, error) {
+  result, err := librarian.DatabasePtr.Exec("INSERT INTO person(nickname, first_name, middle_name, last_name, phone_country, phone_area, phone_number, email, birthdate, description) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", person.Nickname, person.FirstName, person.MiddleName, person.LastName, person.PhoneCountry, person.PhoneArea, person.PhoneNumber, person.Email, person.Birthdate, person.Description)
   if err != nil {
-    return fmt.Errorf("add: %v", err)
+    return nil, fmt.Errorf("add: %v", err)
   }
-  return nil
+  id, err := result.LastInsertId()
+  if err != nil {
+    return nil, fmt.Errorf("get id after add: %v", err)
+  }
+  err = librarian.DatabasePtr.QueryRow("SELECT * FROM person WHERE id = ?", id).Scan(&person)
+  if err != nil {
+    if err == sql.ErrNoRows {
+      return nil, fmt.Errorf("get person %d: unknown person", id)
+    }
+    return nil, fmt.Errorf("get person %d: %v", id, err)
+  }
+  return &person, nil
 }
 
 func (librarian Librarian) search(nickname string) ([]Person, error) {
