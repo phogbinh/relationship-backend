@@ -13,11 +13,11 @@ import(
 
 var librarian Librarian
 
-func add(requestPtr *http.Request, librarianPtr *Librarian) (error) {
+func add(requestPtr *http.Request, librarianPtr *Librarian) (*Person, error) {
   var person Person
   err := json.NewDecoder(requestPtr.Body).Decode(&person)
   if err != nil {
-    return err
+    return nil, err
   }
   return librarianPtr.add(person)
 }
