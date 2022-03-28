@@ -76,26 +76,26 @@ func TestAddPartialPerson(t *testing.T) {
   if personPtr.FirstName.String != "John" {
     t.Errorf("expected John got %v", personPtr.FirstName.String)
   }
-  if personPtr.MiddleName.String != "" {
-    t.Errorf("expected empty string got %v", personPtr.MiddleName.String)
+  if personPtr.MiddleName.Valid != false {
+    t.Errorf("expected null string got %v", personPtr.MiddleName.String)
   }
-  if personPtr.LastName.String != "" {
-    t.Errorf("expected empty string got %v", personPtr.LastName.String)
+  if personPtr.LastName.Valid != false {
+    t.Errorf("expected null string got %v", personPtr.LastName.String)
   }
-  if personPtr.PhoneCountry.String != "" {
-    t.Errorf("expected empty string got %v", personPtr.PhoneCountry.String)
+  if personPtr.PhoneCountry.Valid != false {
+    t.Errorf("expected null string got %v", personPtr.PhoneCountry.String)
   }
-  if personPtr.PhoneArea.String != "" {
-    t.Errorf("expected empty string got %v", personPtr.PhoneArea.String)
+  if personPtr.PhoneArea.Valid != false {
+    t.Errorf("expected null string got %v", personPtr.PhoneArea.String)
   }
-  if personPtr.PhoneNumber.String != "" {
-    t.Errorf("expected empty string got %v", personPtr.PhoneNumber.String)
+  if personPtr.PhoneNumber.Valid != false {
+    t.Errorf("expected null string got %v", personPtr.PhoneNumber.String)
   }
-  if personPtr.Email.String != "" {
-    t.Errorf("expected empty string got %v", personPtr.Email.String)
+  if personPtr.Email.Valid != false {
+    t.Errorf("expected null string got %v", personPtr.Email.String)
   }
-  if personPtr.Birthdate.String != "" {
-    t.Errorf("expected empty string got %v", personPtr.Birthdate.String)
+  if personPtr.Birthdate.Valid != false {
+    t.Errorf("expected null string got %v", personPtr.Birthdate.String)
   }
   if personPtr.Description.String != "he seems like a nice guy" {
     t.Errorf("expected \"he seems like a nice guy\" (without quotes) got %v", personPtr.Description.String)
