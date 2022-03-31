@@ -5,7 +5,7 @@ import(
 )
 
 type Person struct {
-  Id int64
+  Id int64 `json:"id"`
   Nickname string `json:"nickname"`
   FirstName sql.NullString `json:"firstName"`
   MiddleName sql.NullString `json:"middleName"`
