@@ -102,6 +102,53 @@ func TestAddPartialPerson(t *testing.T) {
   }
 }
 
+func TestUpdatePerson(t *testing.T) {
+  librarian := Librarian{
+    DatabasePtr: new(MockDatabase),
+  }
+  personPtr, err := librarian.add(Person{
+    Nickname: "God",
+    LastName: sql.NullString{String: "Lawrence", Valid: true,},
+  })
+  if err != nil {
+    t.Errorf("expected error to be nil got %v", err)
+  }
+  personPtr, err = librarian.update(Person{
+    Id: personPtr.Id,
+    Nickname: "Demon",
+    FirstName: sql.NullString{String: "Satan", Valid: true,},
+    LastName: sql.NullString{String: "", Valid: false,},
+  })
+  if err != nil {
+    t.Errorf("expected error to be nil got %v", err)
+  }
+  if personPtr.Nickname != "Demon" {
+    t.Errorf("expected Demon got %v", personPtr.Nickname)
+  }
+  if personPtr.FirstName.String != "Satan" {
+    t.Errorf("expected Satan got %v", personPtr.FirstName.String)
+  }
+  if personPtr.LastName.Valid != false {
+    t.Errorf("expected null string got %v", personPtr.LastName.String)
+  }
+}
+
+func TestUpdateNotExist(t *testing.T) {
+  librarian := Librarian{
+    DatabasePtr: new(MockDatabase),
+  }
+  personPtr, err := librarian.update(Person{
+    Id: 1,
+    Nickname: "Hello",
+  })
+  if err == nil {
+    t.Errorf("expected error got nil")
+  }
+  if personPtr != nil {
+    t.Errorf("expected nil got %v", personPtr)
+  }
+}
+
 func TestSearchNickname(t *testing.T) {
   librarian := Librarian{
     DatabasePtr: new(MockDatabase),
