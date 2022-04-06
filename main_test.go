@@ -123,3 +123,45 @@ func TestRequestSearchNicknameNotExist(t *testing.T) {
     t.Errorf("expected 0 got %v", len(people))
   }
 }
+
+func TestRequestUpdateId(t *testing.T) {
+  librarian := Librarian{
+    DatabasePtr: new(MockDatabase),
+  }
+  librarian.add(Person{
+    Id: 3,
+    Nickname: "Jen",
+  })
+  requestPtr := httptest.NewRequest( http.MethodPut,
+                                     "/update",
+                                     bytes.NewBuffer( []byte(`{"id": 3, "nickname": "哥", "middleName": {"String": "@%\\", "Valid": true}}`) ) )
+  personPtr, err := update(requestPtr, &librarian)
+  if err != nil {
+    t.Errorf("expected error to be nil got %v", err)
+  }
+  if personPtr.Id != 3 {
+    t.Errorf("expected 3 got %v", personPtr.Id)
+  }
+  if personPtr.Nickname != "哥" {
+    t.Errorf("expected 哥 got %v", personPtr.Nickname)
+  }
+  if personPtr.MiddleName.String != "@%\\" {
+    t.Errorf("expected @%%\\ got %v", personPtr.MiddleName.String)
+  }
+}
+
+func TestRequestUpdateIdNotExist(t *testing.T) {
+  librarian := Librarian{
+    DatabasePtr: new(MockDatabase),
+  }
+  requestPtr := httptest.NewRequest( http.MethodPut,
+                                     "/update",
+                                     bytes.NewBuffer( []byte(`{"id": 1, "nickname": "something"}`) ) )
+  personPtr, err := update(requestPtr, &librarian)
+  if err == nil {
+    t.Errorf("expected error got nil")
+  }
+  if personPtr != nil {
+    t.Errorf("expected nil got %v", personPtr)
+  }
+}

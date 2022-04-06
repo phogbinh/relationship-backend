@@ -62,6 +62,15 @@ func handleRequestSearchNickname(responseWriter http.ResponseWriter, requestPtr 
   }
 }
 
+func update(requestPtr *http.Request, librarianPtr *Librarian) (*Person, error) {
+  var person Person
+  err := json.NewDecoder(requestPtr.Body).Decode(&person)
+  if err != nil {
+    return nil, err
+  }
+  return librarianPtr.update(person)
+}
+
 func main() {
   config := mysql.Config{
     User: os.Getenv("RELATIONSHIP_BACKEND_DATABASE_USER"),
