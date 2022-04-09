@@ -40,7 +40,7 @@ func handleRequestAddPerson(responseWriter http.ResponseWriter, requestPtr *http
 
 func search(requestPtr *http.Request, librarianPtr *Librarian) ([]Person, error) {
   var person Person
-  err := json.NewDecoder(requestPtr.Body).Decode(&person)
+  err := json.NewDecoder(requestPtr.Body).Decode(&person) // TODO detect incorrect json
   if err != nil {
     return nil, err
   }
