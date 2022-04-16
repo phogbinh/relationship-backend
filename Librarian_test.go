@@ -102,7 +102,7 @@ func TestAddPartialPerson(t *testing.T) {
   }
 }
 
-func TestUpdatePerson(t *testing.T) {
+func TestUpdateId(t *testing.T) {
   librarian := Librarian{
     DatabasePtr: new(MockDatabase),
   }
@@ -133,7 +133,7 @@ func TestUpdatePerson(t *testing.T) {
   }
 }
 
-func TestUpdateNotExist(t *testing.T) {
+func TestUpdateIdNotExistId(t *testing.T) {
   librarian := Librarian{
     DatabasePtr: new(MockDatabase),
   }
@@ -220,7 +220,7 @@ func TestSearchNickname(t *testing.T) {
   }
 }
 
-func TestSearchNotExist(t *testing.T) {
+func TestSearchNicknameNotExist(t *testing.T) {
   librarian := Librarian{
     DatabasePtr: new(MockDatabase),
   }
