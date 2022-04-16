@@ -71,6 +71,21 @@ func update(requestPtr *http.Request, librarianPtr *Librarian) (*Person, error) 
   return librarianPtr.update(person)
 }
 
+func handleRequestUpdateId(responseWriter http.ResponseWriter, requestPtr *http.Request) {
+  personPtr, err := update(requestPtr, &librarian)
+  if err != nil {
+    responseWriter.WriteHeader(http.StatusInternalServerError)
+    fmt.Println(err)
+    return
+  }
+  err = json.NewEncoder(responseWriter).Encode(personPtr)
+  if err != nil {
+    responseWriter.WriteHeader(http.StatusInternalServerError)
+    fmt.Println(err)
+    return
+  }
+}
+
 func main() {
   config := mysql.Config{
     User: os.Getenv("RELATIONSHIP_BACKEND_DATABASE_USER"),
@@ -92,5 +107,6 @@ func main() {
   }
   http.HandleFunc("/search", handleRequestSearchNickname)
   http.HandleFunc("/add", handleRequestAddPerson)
+  http.HandleFunc("/update", handleRequestUpdateId)
   log.Fatal(http.ListenAndServe(os.Getenv("RELATIONSHIP_BACKEND_PORT"), nil))
 }
