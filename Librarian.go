@@ -29,14 +29,11 @@ func (librarian *Librarian) add(person Person) (*Person, error) {
 }
 
 func (librarian Librarian) update(person Person) (*Person, error) {
-  result, err := librarian.DatabasePtr.Exec("UPDATE person SET nickname = ?, first_name = ?, middle_name = ?, last_name = ?, phone_country = ?, phone_area = ?, phone_number = ?, email = ?, birthdate = ?, description = ? WHERE id = ?", person.Nickname, person.FirstName, person.MiddleName, person.LastName, person.PhoneCountry, person.PhoneArea, person.PhoneNumber, person.Email, person.Birthdate, person.Description, person.Id)
+  _, err := librarian.DatabasePtr.Exec("UPDATE person SET nickname = ?, first_name = ?, middle_name = ?, last_name = ?, phone_country = ?, phone_area = ?, phone_number = ?, email = ?, birthdate = ?, description = ? WHERE id = ?", person.Nickname, person.FirstName, person.MiddleName, person.LastName, person.PhoneCountry, person.PhoneArea, person.PhoneNumber, person.Email, person.Birthdate, person.Description, person.Id)
   if err != nil {
     return nil, fmt.Errorf("update: %v", err)
   }
-  id, err := result.LastInsertId()
-  if err != nil {
-    return nil, fmt.Errorf("get id after update: %v", err)
-  }
+  id := person.Id
   err = librarian.DatabasePtr.QueryRow("SELECT * FROM person WHERE id = ?", id).Scan(&person.Id, &person.Nickname, &person.FirstName, &person.MiddleName, &person.LastName, &person.PhoneCountry, &person.PhoneArea, &person.PhoneNumber, &person.Email, &person.Birthdate, &person.Description)
   if err != nil {
     if err == sql.ErrNoRows {
