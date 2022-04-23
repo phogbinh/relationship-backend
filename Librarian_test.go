@@ -159,7 +159,7 @@ func TestUpdateId(t *testing.T) {
   }
 }
 
-func TestUpdateIdNotExistId(t *testing.T) {
+func TestUpdateIdNotExist(t *testing.T) {
   librarian := Librarian{
     DatabasePtr: new(MockDatabase),
   }
