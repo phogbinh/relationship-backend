@@ -124,6 +124,36 @@ func TestRequestSearchNicknameNotExist(t *testing.T) {
   }
 }
 
+func TestRequestDeleteId(t *testing.T) {
+  librarian := Librarian{
+    DatabasePtr: new(MockDatabase),
+  }
+  librarian.add(Person{
+    Id: 255,
+    Nickname: "Scott",
+  })
+  requestPtr := httptest.NewRequest( http.MethodDelete,
+                                     "/delete",
+                                     bytes.NewBuffer( []byte(`{"id": 255}`) ) )
+  err := delete(requestPtr, &librarian)
+  if err != nil {
+    t.Errorf("expected error to be nil got %v", err)
+  }
+}
+
+func TestRequestDeleteIdNotExist(t *testing.T) {
+  librarian := Librarian{
+    DatabasePtr: new(MockDatabase),
+  }
+  requestPtr := httptest.NewRequest( http.MethodDelete,
+                                     "/delete",
+                                     bytes.NewBuffer( []byte(`{"id": -1}`) ) )
+  err := delete(requestPtr, &librarian)
+  if err == nil {
+    t.Errorf("expected error got nil")
+  }
+}
+
 func TestRequestUpdateId(t *testing.T) {
   librarian := Librarian{
     DatabasePtr: new(MockDatabase),

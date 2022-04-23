@@ -62,6 +62,15 @@ func handleRequestSearchNickname(responseWriter http.ResponseWriter, requestPtr 
   }
 }
 
+func delete(requestPtr *http.Request, librarianPtr *Librarian) (error) {
+  var person Person
+  err := json.NewDecoder(requestPtr.Body).Decode(&person)
+  if err != nil {
+    return err
+  }
+  return librarianPtr.delete(person.Id)
+}
+
 func update(requestPtr *http.Request, librarianPtr *Librarian) (*Person, error) {
   var person Person
   err := json.NewDecoder(requestPtr.Body).Decode(&person)
