@@ -28,6 +28,11 @@ func (librarian *Librarian) add(person Person) (*Person, error) {
   return &person, nil
 }
 
+func (librarian Librarian) delete(id int64) (error) {
+  _, err := librarian.DatabasePtr.Exec("DELETE FROM person WHERE id = ?", id)
+  return err
+}
+
 func (librarian Librarian) update(person Person) (*Person, error) {
   _, err := librarian.DatabasePtr.Exec("UPDATE person SET nickname = ?, first_name = ?, middle_name = ?, last_name = ?, phone_country = ?, phone_area = ?, phone_number = ?, email = ?, birthdate = ?, description = ? WHERE id = ?", person.Nickname, person.FirstName, person.MiddleName, person.LastName, person.PhoneCountry, person.PhoneArea, person.PhoneNumber, person.Email, person.Birthdate, person.Description, person.Id)
   if err != nil {

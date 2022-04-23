@@ -2,6 +2,7 @@ package main
 
 import(
   "database/sql"
+  "errors"
 )
 
 type MockDatabase struct {  
@@ -32,6 +33,10 @@ func (databasePtr *MockDatabase) Exec(query string, args ...interface{}) (sql.Re
       return new(MockResult), nil
     }
     databasePtr.Data = nil // workaround update by removing all elements to add new
+  } else if query[:6] == "DELETE" {
+    if databasePtr.Data == nil {
+      return nil, errors.New("")
+    }
   }
   databasePtr.Data = append(databasePtr.Data, args)
   return new(MockResult), nil

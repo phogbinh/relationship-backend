@@ -102,6 +102,32 @@ func TestAddPartialPerson(t *testing.T) {
   }
 }
 
+func TestDeleteId(t *testing.T) {
+  librarian := Librarian{
+    DatabasePtr: new(MockDatabase),
+  }
+  _, err := librarian.add(Person{
+    Nickname: "saitama",
+  })
+  if err != nil {
+    t.Errorf("expected error to be nil got %v", err)
+  }
+  err = librarian.delete(1)
+  if err != nil {
+    t.Errorf("expected error to be nil got %v", err)
+  }
+}
+
+func TestDeleteIdNotExist(t *testing.T) {
+  librarian := Librarian{
+    DatabasePtr: new(MockDatabase),
+  }
+  err := librarian.delete(0)
+  if err == nil {
+    t.Errorf("expected error got nil")
+  }
+}
+
 func TestUpdateId(t *testing.T) {
   librarian := Librarian{
     DatabasePtr: new(MockDatabase),
